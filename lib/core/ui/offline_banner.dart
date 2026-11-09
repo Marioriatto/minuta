@@ -11,7 +11,7 @@ class OfflineBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final offline = ref.watch(isOnlineProvider).valueOrNull == false;
+    final offline = ref.watch(isOnlineProvider).value == false;
     final scheme = Theme.of(context).colorScheme;
     return Column(
       children: [

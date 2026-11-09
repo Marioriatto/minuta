@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-/// Hace cumplir la arquitectura por capas dentro de lib/features/<feature>/.
+/// Hace cumplir la arquitectura por capas dentro de `lib/features/<feature>/`.
 /// - domain: Dart puro (sin Flutter, Supabase, Riverpod ni data/presentation).
 /// - presentation: no importa data ni Supabase.
 /// - data: no importa presentation.

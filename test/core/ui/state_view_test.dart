@@ -36,23 +36,34 @@ void main() {
     expect(find.text('No hay nada que mostrar todavía.'), findsOneWidget);
   });
 
-  testWidgets('NetworkFailure muestra sin conexión y permite reintentar', (t) async {
+    testWidgets('NetworkFailure muestra sin conexión y permite reintentar',
+      (t) async {
     var retried = 0;
-    await t.pumpWidget(_host(_view(
-      AsyncValue.error(const NetworkFailure(), StackTrace.empty),
-      onRetry: () => retried++,
-    )));
+    await t.pumpWidget(
+      _host(
+        _view(
+          const AsyncValue.error(NetworkFailure(), StackTrace.empty),
+          onRetry: () => retried++,
+        ),
+      ),
+    );
     expect(find.text('Sin conexión'), findsOneWidget);
     await t.tap(find.text('Reintentar'));
     expect(retried, 1);
   });
 
-  testWidgets('otro error muestra título genérico y mensaje localizado', (t) async {
-    await t.pumpWidget(_host(_view(
-      AsyncValue.error(const ForbiddenFailure(), StackTrace.empty),
-    )));
+  testWidgets('otro error muestra título genérico y mensaje localizado',
+      (t) async {
+    await t.pumpWidget(
+      _host(
+        _view(const AsyncValue.error(ForbiddenFailure(), StackTrace.empty)),
+      ),
+    );
     expect(find.text('Algo salió mal'), findsOneWidget);
-    expect(find.text('No tienes permiso para realizar esta acción.'), findsOneWidget);
+    expect(
+      find.text('No tienes permiso para realizar esta acción.'),
+      findsOneWidget,
+    );
     expect(find.text('Reintentar'), findsNothing);
   });
-}
+  }
