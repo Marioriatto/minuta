@@ -1,0 +1,5 @@
+{
+  "APP_ENV": "prod",
+  "SUPABASE_URL": "https://TU-PROYECTO-prod.supabase.co",
+  "SUPABASE_ANON_KEY": "TU_ANON_O_PUBLISHABLE_KEY"
+}

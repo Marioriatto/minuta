@@ -1,0 +1,24 @@
+{
+  "@@locale": "es",
+  "appTitle": "Colchón Minuta",
+  "@appTitle": { "description": "Nombre de la app mostrado por el sistema" },
+  "commonRetry": "Reintentar",
+  "commonLoading": "Cargando",
+  "stateEmptyDefault": "No hay nada que mostrar todavía.",
+  "stateErrorTitle": "Algo salió mal",
+  "stateOfflineTitle": "Sin conexión",
+  "stateOfflineMessage": "Revisa tu conexión a internet e inténtalo de nuevo.",
+  "offlineBanner": "Sin conexión. Algunas funciones no están disponibles.",
+  "errorNetwork": "No pudimos conectar con el servidor. Revisa tu conexión.",
+  "errorUnauthorized": "Tu sesión expiró o no es válida. Inicia sesión de nuevo.",
+  "errorForbidden": "No tienes permiso para realizar esta acción.",
+  "errorNotFound": "No encontramos lo que buscas.",
+  "errorValidation": "Los datos enviados no son válidos.",
+  "errorServer": "El servidor tuvo un problema. Inténtalo más tarde.",
+  "errorUnknown": "Ocurrió un error inesperado.",
+  "placeholderScreen": "Pantalla «{name}» pendiente de implementar",
+  "@placeholderScreen": {
+    "description": "Marcador de posición de Fase 0; se elimina al implementar la pantalla real",
+    "placeholders": { "name": { "type": "String" } }
+  }
+}
