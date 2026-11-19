@@ -1,17 +1,19 @@
 /*
   Colchón Minuta — CUNA sin colchón (Arduino UNO por USB hacia la PC).
 
-  Mide temperatura y humedad (AHT20), hace pitidos con un buzzer activo y
-  maneja 4 LED con brillo y patrón giratorio. No necesita la balanza (HX711):
-  envía el peso como "nan" y el puente lo ignora.
+  Mide temperatura y humedad (DHT22 / AM2302), hace pitidos con un buzzer
+  activo y maneja 4 LED con brillo y patrón giratorio. No necesita la balanza
+  (HX711): envía el peso como "nan" y el puente lo ignora.
   Mismo protocolo serie que colchon_uno.ino (docs/hardware_protocolo.md), así
   que funciona con el mismo puente de Python sin cambios.
 
   Librerías (Herramientas > Administrar bibliotecas):
-    "Adafruit AHTX0" (instala también "Adafruit BusIO").
+    "DHT sensor library" de Adafruit (instala también "Adafruit Unified Sensor").
 
   Conexiones (todo a 5 V del USB):
-    AHT20   VCC -> 5V (o 3,3V según tu módulo), GND -> GND, SDA -> A4, SCL -> A5
+    DHT22   VCC (+) -> 5V, DATA (out) -> D7, GND (-) -> GND
+            Si es el sensor suelto de 4 patas (no módulo ni AM2302 con cables),
+            pon una resistencia de 10 kΩ entre DATA y 5V. La pata 3 no se usa.
     Buzzer  D8 -> (+) buzzer ACTIVO (-) -> GND
     LED x4  D9, D10, D11, D6 -> resistencia 220 ohm -> LED (pata larga) ; pata corta -> GND
     Botón 1 D4 <-> GND (silencia el buzzer)   Botón 2 D5 <-> GND   (INPUT_PULLUP)
@@ -20,23 +22,23 @@
   Mensajes al PC:  H,<fw>  R,<kg>,<°C>,<%>  B,<n>  K,<cmd>  E,<código>
   Comandos del PC: LIGHT,<0|1>,<brillo>,<velocidad>  BUZ,<ms>  PING
 */
-#include <Wire.h>
-#include <Adafruit_AHTX0.h>
+#include <DHT.h>
 
-const char FW_VERSION[] = "cuna-0.1.0";
+const char FW_VERSION[] = "cuna-0.2.0";
 const long BAUD = 115200;
 
 const uint8_t PIN_LEDS[4] = {9, 10, 11, 6};  // todos con PWM
 const uint8_t PIN_BUZZER = 8;
 const uint8_t PIN_BTN[2] = {4, 5};
+const uint8_t PIN_DHT = 7;
 
+// El DHT22 entrega un dato nuevo cada 2 s como mucho: no muestrear más rápido.
 const unsigned long SAMPLE_EVERY_MS = 2000;
 const unsigned long DEBOUNCE_MS = 40;
 const unsigned int BUZZ_MAX_MS = 5000;
 
-Adafruit_AHTX0 aht;
-bool ahtOk = false;
-unsigned long lastAhtRetry = 0;
+DHT dht(PIN_DHT, DHT22);
+uint8_t dhtFailures = 0;  // lecturas fallidas seguidas (para avisar una vez)
 
 char lineBuf[48];
 uint8_t lineLen = 0;
@@ -96,21 +98,19 @@ void sendHello() {
 }
 
 void sendSample() {
-  // Si el sensor se desconectó o no arrancó, se reintenta cada 10 s.
-  if (!ahtOk && millis() - lastAhtRetry >= 10000) {
-    lastAhtRetry = millis();
-    ahtOk = aht.begin();
-  }
-  float temp = NAN, hum = NAN;
-  if (ahtOk) {
-    sensors_event_t h, t;
-    if (aht.getEvent(&h, &t)) {
-      temp = t.temperature;
-      hum = h.relative_humidity;
-    } else {
-      ahtOk = false;
-      Serial.println(F("E,aht20_read_failed"));
+  // El DHT22 devuelve NAN si no responde (cable suelto, falta la resistencia
+  // de 10 kΩ o se leyó muy seguido). Se envía "nan" y el puente lo ignora.
+  float hum = dht.readHumidity();
+  float temp = dht.readTemperature();  // °C
+  if (isnan(temp) || isnan(hum)) {
+    temp = NAN;
+    hum = NAN;
+    // Avisar solo una vez por racha de fallos, no cada 2 s.
+    if (dhtFailures < 255 && ++dhtFailures == 3) {
+      Serial.println(F("E,dht22_read_failed"));
     }
+  } else {
+    dhtFailures = 0;
   }
   Serial.print(F("R,nan,"));  // sin balanza en la cuna
   Serial.print(temp, 2);
@@ -191,14 +191,14 @@ void setup() {
   stopBuzz();
   for (uint8_t i = 0; i < 2; i++) pinMode(PIN_BTN[i], INPUT_PULLUP);
 
-  ahtOk = aht.begin();
-  lastAhtRetry = millis();
+  dht.begin();
+  // La primera lectura válida llega ~2 s después de encender (primer R,...).
+  lastSample = millis();
 
   // Pitido corto al encender: confirma que el buzzer está bien conectado.
   startBuzz(120);
 
   sendHello();
-  if (!ahtOk) Serial.println(F("E,aht20_not_found"));
 }
 
 void loop() {

@@ -4,14 +4,24 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Push (Firebase): sin google-services.json la app compila igual y funciona
+// sin notificaciones push. El archivo NO va a git (ver .gitignore).
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
     namespace = "com.colchonminuta.app"
-    compileSdk = flutter.compileSdkVersion
+    // 37: lo exigen flutter_local_notifications y androidx.core 1.19 (push).
+    // Solo cambia contra qué APIs se compila; minSdk y targetSdk no cambian.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // Requerido por flutter_local_notifications.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
@@ -44,4 +54,8 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

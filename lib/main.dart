@@ -7,6 +7,8 @@ import 'app.dart';
 import 'core/config/app_config.dart';
 import 'core/config/app_config_provider.dart';
 import 'core/supabase/supabase_bootstrap.dart';
+import 'features/notifications/data/firebase_push_gateway.dart';
+import 'features/notifications/notifications_providers.dart';
 
 Future<void> main() async {
   await runZonedGuarded<Future<void>>(() async {
@@ -26,9 +28,15 @@ Future<void> main() async {
 
     await initSupabase(config);
 
+    // Push (RF-03): si Firebase no está configurado la app sigue sin push.
+    final push = await FirebasePushGateway.create();
+
     runApp(
       ProviderScope(
-        overrides: [appConfigProvider.overrideWithValue(config)],
+        overrides: [
+          appConfigProvider.overrideWithValue(config),
+          if (push != null) pushGatewayProvider.overrideWithValue(push),
+        ],
         child: const App(),
       ),
     );

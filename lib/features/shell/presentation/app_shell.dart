@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../l10n/generated/app_localizations.dart';
+import '../../alerts/alerts_providers.dart';
 
 /// Contenedor con la barra inferior de 5 pestañas (RNF-06: controles básicos a
-/// un clic desde la pantalla principal).
-class AppShell extends StatelessWidget {
+/// un clic desde la pantalla principal). Alertas muestra las no leídas.
+class AppShell extends ConsumerWidget {
   const AppShell({required this.navigationShell, super.key});
 
   final StatefulNavigationShell navigationShell;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final unread = ref.watch(unreadAlertsCountProvider);
+
+    Widget withBadge(Widget icon) => Badge(
+          isLabelVisible: unread > 0,
+          label: Text(unread > 99 ? '99+' : '$unread'),
+          child: icon,
+        );
+
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
@@ -28,8 +38,8 @@ class AppShell extends StatelessWidget {
             label: l10n.navHome,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.notifications_none_rounded),
-            selectedIcon: const Icon(Icons.notifications_rounded),
+            icon: withBadge(const Icon(Icons.notifications_none_rounded)),
+            selectedIcon: withBadge(const Icon(Icons.notifications_rounded)),
             label: l10n.navAlerts,
           ),
           NavigationDestination(

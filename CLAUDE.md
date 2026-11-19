@@ -120,7 +120,7 @@ Arduino UNO ──USB/COM (CSV, 115200)──► Puente Python ──HTTPS──
 | Buzzer activo | D8 |
 | Botones (INPUT_PULLUP) | D4, D5 |
 
-Sketches: `colchon_uno.ino` (todo, v0.2.1: ya no se cuelga sin HX711) y `cuna_uno.ino` (cuna sin balanza; ver `docs/hardware_cuna.md`). Ambos compilan para UNO con el `arduino-cli` del IDE.
+Sketches: `colchon_uno.ino` (todo, v0.2.1: ya no se cuelga sin HX711) y `cuna_uno.ino` (cuna sin balanza, sensor **DHT22 en D7** porque la tienda no tenía AHT20; ver `docs/hardware_cuna.md`). Ambos compilan para UNO con el `arduino-cli` del IDE.
 Librerías: HX711 (Bogdan Necula), Adafruit AHTX0 (+ BusIO). Calibración del factor de escala en EEPROM.
 **Limitación conocida:** leer el peso bloquea ~0,3–0,5 s cada 2 s, así que el patrón de luces hace una pausa breve.
 
@@ -204,6 +204,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 | Temporizador de luces | `ends_at`, `expire_lights_timers`, `p_keep_timer` |
 | Cuna: temperatura/humedad y umbrales | `cradle_page.dart`, `set_thresholds`, trigger `evaluate_thresholds` |
 | Vinculación de módulos | `claim_device_page.dart`, `claim_device` |
+| RF-03 / APP-001 push y pestaña Alertas | `features/alerts`, `features/notifications`, Edge Function `push`, migración `push_alerts` (ver `docs/push_firebase.md`) |
 | RF-05 dashboard de Inicio | `features/dashboard` (`HomeDashboardPage`, `readings_hourly`, `events`); estados vacíos para cuenta nueva |
 | RF-11 peso del bebé medido por el colchón | `WeighBaby`, menú "Pesar ahora" en `babies_page.dart`, `weigh_baby` |
 | Login con Google | `signInWithOAuth` ya implementado; se activa con `SOCIAL_LOGIN=true` + proveedor en Supabase |
@@ -212,7 +213,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 
 ## 10. Pendiente y riesgos
 
-**Siguiente:** iniciar/detener detección (RF-12); push FCM + webhook; validar Fase 2; limpiar huérfanos de `lib/core/router/`; migración inicial en `supabase/`; revocar `UPDATE` directo en `devices.config`; confirmar `.gitignore` de `google_secret.txt`; Figma si se aportan diseños.
+**Siguiente:** iniciar/detener detección (RF-12); aplicar migración `push_alerts` + desplegar Edge Function `push` y configurar Firebase (código listo); validar Fase 2; limpiar huérfanos de `lib/core/router/`; migración inicial en `supabase/`; revocar `UPDATE` directo en `devices.config`; confirmar `.gitignore` de `google_secret.txt`; Figma si se aportan diseños.
 
 **Backlog:** en Jira, proyecto **CM** (10 épicas, 32 historias, 75 subtareas, 139 puntos). Detalle y mapeo en `docs/backlog.md`.
 

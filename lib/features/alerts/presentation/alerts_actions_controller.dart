@@ -45,7 +45,9 @@ class AlertsActionsController extends Notifier<AlertsActionsState> {
     if (_disposed) return;
     result.when(
       ok: (_) {
-        ref.read(alertsProvider.notifier).applyRead(null, DateTime.now().toUtc());
+        ref
+            .read(alertsProvider.notifier)
+            .applyRead(null, DateTime.now().toUtc());
         state = const AlertsActionsState();
       },
       err: (failure) => state = AlertsActionsState(failure: failure),

@@ -194,6 +194,27 @@
   "babyRestoredSnack": "Perfil restaurado",
   "babyDeletedSnack": "Perfil eliminado",
   "brandName": "Minuta",
+  "alertsMarkAll": "Marcar todas como leídas",
+  "alertsEmptyTitle": "Sin alertas",
+  "alertsEmptyBody": "Aquí verás los avisos de tus ampliaciones: ausencia del bebé, movimiento, temperatura y humedad fuera de rango.",
+  "alertSeverityCritical": "Crítica",
+  "alertSeverityWarning": "Advertencia",
+  "alertSeverityInfo": "Aviso",
+  "alertUnread": "No leída",
+  "alertDetailTemperature": "{value} °C · límite {limit} °C",
+  "@alertDetailTemperature": {
+    "placeholders": {
+      "value": {"type": "String"},
+      "limit": {"type": "String"}
+    }
+  },
+  "alertDetailHumidity": "{value} % · límite {limit} %",
+  "@alertDetailHumidity": {
+    "placeholders": {
+      "value": {"type": "String"},
+      "limit": {"type": "String"}
+    }
+  },
   "cradleBuzz": "Hacer sonar la cuna",
   "cradleBuzzSent": "Pitido enviado: la cuna sonará en unos segundos.",
   "homeNowSection": "Ahora",

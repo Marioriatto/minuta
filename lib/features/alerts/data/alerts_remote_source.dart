@@ -34,6 +34,6 @@ class SupabaseAlertsRemoteSource implements AlertsRemoteSource {
 
   @override
   Future<void> markRead(List<int>? ids) async {
-    await _client.rpc('mark_alerts_read', params: {'p_ids': ids});
+    await _client.rpc<dynamic>('mark_alerts_read', params: {'p_ids': ids});
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/router/app_routes.dart';
+import '../../features/alerts/presentation/alerts_page.dart';
 import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/reset_password_page.dart';
@@ -141,10 +142,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: AppRoutes.alerts,
-                builder: (context, _) => ComingSoonTab(
-                  title: AppLocalizations.of(context).navAlerts,
-                  icon: Icons.notifications_none_rounded,
-                ),
+                builder: (_, __) => const AlertsPage(),
               ),
             ],
           ),

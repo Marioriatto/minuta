@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../notifications/notifications_providers.dart';
 import '../../auth_providers.dart';
 import 'auth_form_state.dart';
 
@@ -15,6 +16,10 @@ class SignOutController extends Notifier<AuthFormState> {
 
   Future<void> signOut() async {
     state = const AuthFormState(busy: true);
+    // El teléfono deja de recibir alertas de esta cuenta. Si falla (p. ej. sin
+    // red) se cierra sesión igual: el token se reasigna al próximo usuario.
+    await ref.read(unregisterPushTokenProvider)();
+    if (_disposed) return;
     final result = await ref.read(signOutProvider)();
     if (_disposed) return;
     state = result.when(

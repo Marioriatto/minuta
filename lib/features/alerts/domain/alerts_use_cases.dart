@@ -21,7 +21,10 @@ class MarkAlertsRead {
   final AlertsRepository _repo;
 
   Future<Result<void>> call(Iterable<Alert> alerts) {
-    final ids = [for (final a in alerts) if (!a.isRead) a.id];
+    final ids = [
+      for (final a in alerts)
+        if (!a.isRead) a.id,
+    ];
     if (ids.isEmpty) return Future.value(const Ok<void>(null));
     return _repo.markRead(ids);
   }

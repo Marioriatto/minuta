@@ -63,9 +63,9 @@ abstract final class AlertsRules {
       alerts.where((a) => !a.isRead).length;
 
   /// Más reciente primero; a igual hora, la de mayor id.
-  static List<Alert> sorted(Iterable<Alert> alerts) => [...alerts]
-    ..sort((a, b) {
-      final byTime = b.occurredAt.compareTo(a.occurredAt);
-      return byTime != 0 ? byTime : b.id.compareTo(a.id);
-    });
+  static List<Alert> sorted(Iterable<Alert> alerts) =>
+      [...alerts]..sort((a, b) {
+          final byTime = b.occurredAt.compareTo(a.occurredAt);
+          return byTime != 0 ? byTime : b.id.compareTo(a.id);
+        });
 }

@@ -25,6 +25,8 @@ abstract final class DesignTokens {
   static const successContainer = Color(0xFFE6F6EE);
   static const danger = Color(0xFFD64545);
   static const dangerContainer = Color(0xFFFDECEC);
+  static const warning = Color(0xFFB7700F);
+  static const warningContainer = Color(0xFFFFF3E0);
 
   // Avatares de perfil (degradado durazno, estimado)
   static const avatarStart = Color(0xFFF8D9C2);
