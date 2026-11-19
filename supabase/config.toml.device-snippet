@@ -2,3 +2,7 @@
 # El módulo se autentica con su propio token, no con un JWT de Supabase.
 [functions.device]
 verify_jwt = false
+
+# La llama el trigger alerts_notify_push (pg_net); el envío es idempotente.
+[functions.push]
+verify_jwt = false
