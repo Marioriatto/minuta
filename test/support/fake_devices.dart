@@ -81,6 +81,16 @@ class FakeDevicesRepository implements DevicesRepository {
     if (failWith != null) return Err(failWith!);
     return Ok(makeDevice(id: deviceId, kind: DeviceKind.cradle));
   }
+
+  @override
+  Future<Result<void>> buzz({
+    required String deviceId,
+    required int milliseconds,
+  }) async {
+    calls.add('buzz:$deviceId:$milliseconds');
+    if (failWith != null) return Err(failWith!);
+    return const Ok<void>(null);
+  }
 }
 
 /// Lista de módulos fija para pruebas de controladores (sin sesión ni red).

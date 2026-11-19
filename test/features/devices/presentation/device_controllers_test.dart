@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:colchon_minuta/core/errors/app_failure.dart';
 import 'package:colchon_minuta/features/devices/devices_providers.dart';
+import 'package:colchon_minuta/features/devices/domain/device.dart';
 import 'package:colchon_minuta/features/devices/domain/device_code.dart';
 import 'package:colchon_minuta/features/devices/domain/lights_settings.dart';
 import 'package:colchon_minuta/features/devices/domain/thresholds.dart';
@@ -91,6 +92,19 @@ void main() {
         c.read(deviceActionsControllerProvider).failure,
         isA<NetworkFailure>(),
       );
+    });
+
+    test('hacer sonar la cuna envía el pitido y avisa', () async {
+      final repo = FakeDevicesRepository();
+      final c = _container(repo);
+      await c
+          .read(deviceActionsControllerProvider.notifier)
+          .buzz(makeDevice(id: 'c1', kind: DeviceKind.cradle));
+      expect(
+        c.read(deviceActionsControllerProvider).done,
+        DeviceActionDone.buzz,
+      );
+      expect(repo.calls.single, 'buzz:c1:1000');
     });
 
     test('mientras un cambio viaja solo se envía el más reciente', () async {

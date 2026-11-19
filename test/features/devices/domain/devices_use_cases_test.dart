@@ -8,6 +8,32 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../support/fake_devices.dart';
 
 void main() {
+  group('BuzzCradle', () {
+    test('solo la cuna puede sonar y con duración válida', () async {
+      final repo = FakeDevicesRepository();
+      final buzz = BuzzCradle(repo);
+      final lights = makeDevice(kind: DeviceKind.lights);
+      final cradle = makeDevice(id: 'c1', kind: DeviceKind.cradle);
+
+      Object? failureOf(Result<void> r) =>
+          r.when(ok: (_) => null, err: (f) => f);
+
+      expect(failureOf(await buzz(lights)), isA<ValidationFailure>());
+      expect(
+        failureOf(await buzz(cradle, milliseconds: 10)),
+        isA<ValidationFailure>(),
+      );
+      expect(
+        failureOf(await buzz(cradle, milliseconds: 9000)),
+        isA<ValidationFailure>(),
+      );
+      expect(repo.calls, isEmpty);
+
+      expect(failureOf(await buzz(cradle)), isNull);
+      expect(repo.calls, ['buzz:c1:1000']);
+    });
+  });
+
   group('ClaimDevice', () {
     test('un código inválido no llega al servidor', () async {
       final repo = FakeDevicesRepository();

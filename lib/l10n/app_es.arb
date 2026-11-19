@@ -194,6 +194,8 @@
   "babyRestoredSnack": "Perfil restaurado",
   "babyDeletedSnack": "Perfil eliminado",
   "brandName": "Minuta",
+  "cradleBuzz": "Hacer sonar la cuna",
+  "cradleBuzzSent": "Pitido enviado: la cuna sonará en unos segundos.",
   "homeNowSection": "Ahora",
   "homeTrendsSection": "Tendencias",
   "homeActivitySection": "Actividad reciente",

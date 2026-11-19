@@ -18,4 +18,11 @@ abstract interface class DevicesRepository {
     required String deviceId,
     required Thresholds thresholds,
   });
+
+  /// Hace sonar el buzzer de la cuna [milliseconds] ms. El puente lo recoge
+  /// en su siguiente consulta (~3 s).
+  Future<Result<void>> buzz({
+    required String deviceId,
+    required int milliseconds,
+  });
 }

@@ -20,7 +20,7 @@
 #include <HX711.h>
 #include <Adafruit_AHTX0.h>
 
-const char FW_VERSION[] = "0.2.0";
+const char FW_VERSION[] = "0.2.1";
 const long BAUD = 115200;
 
 const uint8_t PIN_HX_DT = 2, PIN_HX_SCK = 3;
@@ -39,6 +39,7 @@ const uint8_t EE_MAGIC = 0xA7;
 HX711 scale;
 Adafruit_AHTX0 aht;
 bool ahtOk = false;
+bool hxOk = false;  // false si el HX711 no responde (p. ej. placa sin balanza)
 
 char lineBuf[48];
 uint8_t lineLen = 0;
@@ -96,7 +97,7 @@ void sendHello() {
 
 void sendSample() {
   float weight = NAN, temp = NAN, hum = NAN;
-  if (scale.wait_ready_timeout(300)) weight = scale.get_units(5);  // kg tras calibrar
+  if (hxOk && scale.wait_ready_timeout(300)) weight = scale.get_units(5);  // kg tras calibrar
   if (ahtOk) {
     sensors_event_t h, t;
     if (aht.getEvent(&h, &t)) {
@@ -136,6 +137,10 @@ void handleCommand(char *line) {
     digitalWrite(PIN_BUZZER, HIGH);
     buzzUntil = millis() + ms;
     Serial.println(F("K,BUZ"));
+  } else if (!hxOk && (!strcmp(line, "TARE") || !strcmp(line, "RAW") ||
+                       !strcmp(line, "CAL"))) {
+    // Sin HX711, tare/get_value esperarían para siempre: se responde error.
+    Serial.println(F("E,hx711_not_found"));
   } else if (!strcmp(line, "TARE")) {
     scale.tare(10);
     Serial.println(F("K,TARE"));
@@ -206,10 +211,14 @@ void setup() {
 
   scale.begin(PIN_HX_DT, PIN_HX_SCK);
   scale.set_scale(loadScale());
-  scale.tare(10);  // el colchón debe estar vacío al encender
+  // tare() espera sin límite a que el HX711 responda: sin balanza conectada el
+  // Arduino se quedaría colgado aquí. Solo se tara si responde a tiempo.
+  hxOk = scale.wait_ready_timeout(1000);
+  if (hxOk) scale.tare(10);  // el colchón debe estar vacío al encender
 
   ahtOk = aht.begin();
   sendHello();
+  if (!hxOk) Serial.println(F("E,hx711_not_found"));
   if (!ahtOk) Serial.println(F("E,aht20_not_found"));
 }
 

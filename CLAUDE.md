@@ -120,6 +120,7 @@ Arduino UNO ──USB/COM (CSV, 115200)──► Puente Python ──HTTPS──
 | Buzzer activo | D8 |
 | Botones (INPUT_PULLUP) | D4, D5 |
 
+Sketches: `colchon_uno.ino` (todo, v0.2.1: ya no se cuelga sin HX711) y `cuna_uno.ino` (cuna sin balanza; ver `docs/hardware_cuna.md`). Ambos compilan para UNO con el `arduino-cli` del IDE.
 Librerías: HX711 (Bogdan Necula), Adafruit AHTX0 (+ BusIO). Calibración del factor de escala en EEPROM.
 **Limitación conocida:** leer el peso bloquea ~0,3–0,5 s cada 2 s, así que el patrón de luces hace una pausa breve.
 
@@ -130,7 +131,7 @@ Librerías: HX711 (Bogdan Necula), Adafruit AHTX0 (+ BusIO). Calibración del fa
 ### Lógica del puente
 - Lotes cada **10 s**, con reintentos y buffer de **2000** lecturas.
 - Eventos `presence` / `movement` / `absence`; ausencia y movimiento solo con **periodo de detección abierto**.
-- Comandos de nube: `tare` (colchón), `buzz` (cuna).
+- Comandos de nube: `tare` (colchón), `buzz` (cuna). La app encola `buzz` insertando en `commands` (RLS + trigger `commands_enforce_refs` validan dueño); botón "Hacer sonar la cuna".
 - Luces: estado efectivo = `config` + `ends_at` comparado con `server_time` (el reloj del servidor manda, no el de la PC).
 - Tras un `Hello` (reinicio del Arduino) se reenvía el estado de luces.
 

@@ -51,6 +51,8 @@ class _CradlePageState extends ConsumerState<CradlePage> {
             .showSnackBar(SnackBar(content: Text(l10n.forFailure(failure))));
       } else if (next.done == DeviceActionDone.thresholds) {
         messenger.showSnackBar(SnackBar(content: Text(l10n.cradleSaved)));
+      } else if (next.done == DeviceActionDone.buzz) {
+        messenger.showSnackBar(SnackBar(content: Text(l10n.cradleBuzzSent)));
       }
     });
 
@@ -100,6 +102,20 @@ class _CradlePageState extends ConsumerState<CradlePage> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          // Pitido del buzzer de la cuna (sustituye al speaker de RF-19 en el
+          // prototipo). Solo con la cuna en línea: el comando caduca en 2 min.
+          PrimaryButton(
+            label: l10n.cradleBuzz,
+            icon: Icons.notifications_active_outlined,
+            tone: ButtonTone.tonal,
+            busy: ref.watch(deviceActionsControllerProvider).busy,
+            onPressed: online
+                ? () => ref
+                    .read(deviceActionsControllerProvider.notifier)
+                    .buzz(device)
+                : null,
           ),
           const SizedBox(height: 24),
           _ThresholdsForm(device: device, initial: thresholds),

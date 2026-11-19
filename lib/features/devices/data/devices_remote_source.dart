@@ -21,6 +21,14 @@ abstract interface class DevicesRemoteSource {
     double? humMin,
     double? humMax,
   });
+
+  /// Encola un comando para el módulo (tabla `commands`). RLS exige que sea
+  /// del usuario y el trigger `commands_enforce_refs` que el módulo también.
+  Future<void> sendCommand({
+    required String deviceId,
+    required String command,
+    Map<String, Object?> params = const {},
+  });
 }
 
 class SupabaseDevicesRemoteSource implements DevicesRemoteSource {
@@ -97,4 +105,18 @@ class SupabaseDevicesRemoteSource implements DevicesRemoteSource {
           },
         ),
       );
+
+  @override
+  Future<void> sendCommand({
+    required String deviceId,
+    required String command,
+    Map<String, Object?> params = const {},
+  }) async {
+    // owner_id, status ('pending') y expires_at (2 min) los pone la base.
+    await _client.from('commands').insert({
+      'device_id': deviceId,
+      'command': command,
+      'params': params,
+    });
+  }
 }

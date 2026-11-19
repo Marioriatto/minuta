@@ -81,6 +81,16 @@ class FakeRemote implements DevicesRemoteSource {
     calls.add('thresholds:$tempMin:$tempMax:$humMin:$humMax');
     return _maybeThrow(row());
   }
+
+  @override
+  Future<void> sendCommand({
+    required String deviceId,
+    required String command,
+    Map<String, Object?> params = const {},
+  }) async {
+    calls.add('command:$deviceId:$command:$params');
+    _maybeThrow(null);
+  }
 }
 
 void main() {
@@ -195,6 +205,14 @@ void main() {
         'minutes': 15,
         'keepTimer': true,
       });
+    });
+
+    test('buzz encola el comando buzz con la duración', () async {
+      final remote = FakeRemote();
+      final r = await DevicesRepositoryImpl(remote)
+          .buzz(deviceId: 'c1', milliseconds: 1000);
+      expect(r.when(ok: (_) => true, err: (_) => false), isTrue);
+      expect(remote.calls.single, 'command:c1:buzz:{ms: 1000}');
     });
 
     test('setThresholds envía los cuatro límites', () async {

@@ -60,4 +60,17 @@ class DevicesRepositoryImpl implements DevicesRepository {
           ),
         ),
       );
+
+  @override
+  Future<Result<void>> buzz({
+    required String deviceId,
+    required int milliseconds,
+  }) =>
+      runCatching<void>(
+        () => _remote.sendCommand(
+          deviceId: deviceId,
+          command: 'buzz',
+          params: {'ms': milliseconds},
+        ),
+      );
 }

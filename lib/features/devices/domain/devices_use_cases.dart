@@ -42,6 +42,26 @@ class SetLights {
   }
 }
 
+/// Pitido del buzzer de la cuna. Solo para cunas y con una duración razonable
+/// (el firmware además lo limita a 5 s).
+class BuzzCradle {
+  const BuzzCradle(this._repo);
+  final DevicesRepository _repo;
+
+  static const defaultMs = 1000;
+  static const minMs = 100;
+  static const maxMs = 5000;
+
+  Future<Result<void>> call(Device device, {int milliseconds = defaultMs}) {
+    if (device.kind != DeviceKind.cradle ||
+        milliseconds < minMs ||
+        milliseconds > maxMs) {
+      return Future.value(const Err(ValidationFailure()));
+    }
+    return _repo.buzz(deviceId: device.id, milliseconds: milliseconds);
+  }
+}
+
 class SetThresholds {
   const SetThresholds(this._repo);
   final DevicesRepository _repo;

@@ -32,6 +32,9 @@ final setLightsProvider = Provider<SetLights>(
 final setThresholdsProvider = Provider<SetThresholds>(
   (ref) => SetThresholds(ref.watch(devicesRepositoryProvider)),
 );
+final buzzCradleProvider = Provider<BuzzCradle>(
+  (ref) => BuzzCradle(ref.watch(devicesRepositoryProvider)),
+);
 
 /// Módulos de la cuenta: carga inicial + cambios en vivo (Realtime). Si la
 /// conexión en vivo falla se conservan los últimos datos conocidos.

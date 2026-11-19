@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/errors/app_failure.dart';
 import '../../devices_providers.dart';
+import '../../domain/device.dart';
 import '../../domain/lights_settings.dart';
 import '../../domain/thresholds.dart';
 
-enum DeviceActionDone { lights, thresholds }
+enum DeviceActionDone { lights, thresholds, buzz }
 
 @immutable
 class DeviceActionState {
@@ -57,6 +58,17 @@ class DeviceActionsController extends Notifier<DeviceActionState> {
     } finally {
       _sendingLights = false;
     }
+  }
+
+  /// Pitido del buzzer de la cuna.
+  Future<void> buzz(Device cradle) async {
+    state = const DeviceActionState(busy: true);
+    final result = await ref.read(buzzCradleProvider)(cradle);
+    if (_disposed) return;
+    state = result.when(
+      ok: (_) => const DeviceActionState(done: DeviceActionDone.buzz),
+      err: (failure) => DeviceActionState(failure: failure),
+    );
   }
 
   Future<void> setThresholds({
