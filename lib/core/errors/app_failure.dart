@@ -35,3 +35,58 @@ final class ServerFailure extends AppFailure {
 final class UnknownFailure extends AppFailure {
   const UnknownFailure({super.cause});
 }
+
+/// Correo o contraseña incorrectos al iniciar sesión.
+final class InvalidCredentialsFailure extends AppFailure {
+  const InvalidCredentialsFailure({super.cause});
+}
+
+final class EmailNotConfirmedFailure extends AppFailure {
+  const EmailNotConfirmedFailure({super.cause});
+}
+
+final class EmailAlreadyRegisteredFailure extends AppFailure {
+  const EmailAlreadyRegisteredFailure({super.cause});
+}
+
+final class WeakPasswordFailure extends AppFailure {
+  const WeakPasswordFailure({super.cause});
+}
+
+final class RateLimitedFailure extends AppFailure {
+  const RateLimitedFailure({super.cause});
+}
+
+/// Se intentó archivar el único perfil activo.
+final class LastActiveProfileFailure extends AppFailure {
+  const LastActiveProfileFailure({super.cause});
+}
+
+/// Código de vinculación inexistente o ya usado (RF-06).
+final class InvalidDeviceCodeFailure extends AppFailure {
+  const InvalidDeviceCodeFailure({super.cause});
+}
+
+enum MattressWeightProblem {
+  /// No hay colchón vinculado a la cuenta.
+  notLinked,
+
+  /// El colchón no ha reportado en los últimos 30 s.
+  offline,
+
+  /// El colchón está vacío o la lectura no es válida.
+  noReading,
+}
+
+/// "Pesar ahora" no pudo tomar el peso del colchón (RF-11).
+final class MattressWeightFailure extends AppFailure {
+  const MattressWeightFailure(this.problem, {super.cause});
+  final MattressWeightProblem problem;
+}
+
+/// Envuelve cualquier error inesperado en un [UnknownFailure] sin depender de
+/// ninguna librería externa (usable desde el dominio).
+abstract final class UnknownFailureFor {
+  static AppFailure wrap(Object error) =>
+      error is AppFailure ? error : UnknownFailure(cause: error);
+}

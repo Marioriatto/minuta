@@ -1,0 +1,28 @@
+# Copia este archivo a bridge.toml (está en .gitignore) y rellénalo.
+# Los tokens también se pueden dar por variables de entorno:
+#   COLCHON_TOKEN_MATTRESS, COLCHON_TOKEN_CRADLE, COLCHON_TOKEN_LIGHTS
+
+[api]
+# URL base de la Edge Function (sin barra final)
+base_url = "https://TU-PROYECTO.supabase.co/functions/v1/device"
+timeout_s = 10
+
+[serial]
+port = "COM3"          # Windows: mira el Administrador de dispositivos. Linux: /dev/ttyUSB0
+baud = 115200
+
+[devices]
+# Un token por módulo lógico (los entrega provision_device). Solo `mattress` y
+# `cradle` son necesarios para peso/temperatura/humedad; `lights` es opcional.
+mattress = ""
+cradle = ""
+lights = ""
+
+[tuning]
+sample_interval_s = 10        # cada cuánto se guarda una lectura en la base
+flush_interval_s = 10         # cada cuánto se sube el lote
+poll_interval_s = 3           # cada cuánto se consultan comandos y configuración
+presence_threshold_kg = 1.0   # por debajo se considera colchón vacío
+absence_confirm_s = 10        # tiempo bajo el umbral antes de declarar ausencia
+movement_delta_kg = 0.15      # variación que cuenta como movimiento
+movement_cooldown_s = 30      # mínimo entre dos eventos de movimiento

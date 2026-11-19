@@ -28,12 +28,14 @@ class AppConfig {
     required this.environment,
     required this.supabaseUrl,
     required this.supabaseAnonKey,
+    required this.socialLoginEnabled,
   });
 
   factory AppConfig.fromEnvironment() => AppConfig.parse(
         environment: const String.fromEnvironment('APP_ENV'),
         supabaseUrl: const String.fromEnvironment('SUPABASE_URL'),
         supabaseAnonKey: const String.fromEnvironment('SUPABASE_ANON_KEY'),
+        socialLoginEnabled: const bool.fromEnvironment('SOCIAL_LOGIN'),
       );
 
   /// Valida y construye. Separado de [fromEnvironment] para poder probarlo.
@@ -41,6 +43,7 @@ class AppConfig {
     required String environment,
     required String supabaseUrl,
     required String supabaseAnonKey,
+    bool socialLoginEnabled = false,
   }) {
     final env = AppEnvironment.tryParse(environment.trim());
     if (env == null) {
@@ -75,12 +78,17 @@ class AppConfig {
       environment: env,
       supabaseUrl: uri.toString(),
       supabaseAnonKey: key,
+      socialLoginEnabled: socialLoginEnabled,
     );
   }
 
   final AppEnvironment environment;
   final String supabaseUrl;
   final String supabaseAnonKey;
+
+  /// Muestra los botones de Google/Apple. Debe activarse solo cuando los
+  /// proveedores estén configurados en Supabase (por defecto, apagado).
+  final bool socialLoginEnabled;
 
   bool get isProd => environment == AppEnvironment.prod;
 

@@ -1,0 +1,4 @@
+# Añade esto a supabase/config.toml (o despliega con --no-verify-jwt).
+# El módulo se autentica con su propio token, no con un JWT de Supabase.
+[functions.device]
+verify_jwt = false

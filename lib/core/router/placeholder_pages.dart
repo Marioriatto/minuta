@@ -12,7 +12,7 @@ class PlaceholderPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.appTitle)),
-      body: Center(child: Text(l10n.placeholderScreen(name))),
+      body: Center(child: Text(name)),
     );
   }
 }

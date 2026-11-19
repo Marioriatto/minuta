@@ -19,13 +19,19 @@ Feature-first con capas dentro de cada feature:
 
 ```
 lib/
-  core/            config, errores, red, router, tema, ui compartida
+  app/             composición: router, AppGate (sesión + permisos)
+  core/            config, errores, red, rutas, tema, ui compartida
   features/<f>/
-    presentation/  widgets + notifiers/providers (sin lógica de negocio)
+    <f>_providers.dart  única conexión datos ↔ dominio (inyección)
+    presentation/  widgets + notifiers (sin lógica de negocio)
     domain/        entidades, interfaces de repositorio, casos de uso (Dart puro)
-    data/          DTOs, data sources (Supabase), implementación de repositorios
+    data/          data sources (Supabase), implementación de repositorios
   l10n/            ARB (es base); código generado en l10n/generated (no versionado)
 ```
+
+Features actuales: `auth`, `permissions`, `babies`, `settings`, `shell`.
+Contrato de la tabla `babies`: `docs/fase2_contrato.md`.
+Configuración de plataforma y Supabase: `docs/fase1_setup.md`.
 
 `test/architecture/layers_test.dart` falla si se violan las dependencias entre capas.
 

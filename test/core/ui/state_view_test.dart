@@ -36,7 +36,7 @@ void main() {
     expect(find.text('No hay nada que mostrar todavía.'), findsOneWidget);
   });
 
-    testWidgets('NetworkFailure muestra sin conexión y permite reintentar',
+  testWidgets('NetworkFailure muestra sin conexión y permite reintentar',
       (t) async {
     var retried = 0;
     await t.pumpWidget(
@@ -66,4 +66,4 @@ void main() {
     );
     expect(find.text('Reintentar'), findsNothing);
   });
-  }
+}

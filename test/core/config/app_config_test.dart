@@ -24,6 +24,10 @@ void main() {
       expect(c.isProd, isTrue);
     });
 
+    test('el login social está apagado por defecto', () {
+      expect(_parse().socialLoginEnabled, isFalse);
+    });
+
     test('rechaza APP_ENV desconocido o vacío', () {
       expect(() => _parse(env: 'qa'), throwsA(isA<ConfigException>()));
       expect(() => _parse(env: ''), throwsA(isA<ConfigException>()));
@@ -43,7 +47,10 @@ void main() {
         () => _parse(env: 'prod', url: 'http://localhost:54321'),
         throwsA(isA<ConfigException>()),
       );
-      expect(_parse(url: 'http://10.0.2.2:54321').supabaseUrl, contains('10.0.2.2'));
+      expect(
+        _parse(url: 'http://10.0.2.2:54321').supabaseUrl,
+        contains('10.0.2.2'),
+      );
     });
 
     test('rechaza clave vacía', () {

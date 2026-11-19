@@ -13,7 +13,7 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
     FlutterError.onError = (details) {
       FlutterError.presentError(details);
-      // TODO(fase-x): reportar a crash reporting (herramienta por definir).
+      // Pendiente (fase-x): reportar a crash reporting (por definir).
     };
 
     final AppConfig config;

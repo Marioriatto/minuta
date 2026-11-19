@@ -12,7 +12,9 @@ void main() {
     test('cualquier interfaz distinta de none → online', () {
       expect(isOnlineFrom(const [ConnectivityResult.wifi]), isTrue);
       expect(
-        isOnlineFrom(const [ConnectivityResult.none, ConnectivityResult.mobile]),
+        isOnlineFrom(
+          const [ConnectivityResult.none, ConnectivityResult.mobile],
+        ),
         isTrue,
       );
     });

@@ -1,9 +1,12 @@
 {
   "@@locale": "es",
   "appTitle": "Colchón Minuta",
-  "@appTitle": { "description": "Nombre de la app mostrado por el sistema" },
+  "@appTitle": {
+    "description": "Nombre de la app mostrado por el sistema"
+  },
   "commonRetry": "Reintentar",
   "commonLoading": "Cargando",
+  "commonContinue": "Continuar",
   "stateEmptyDefault": "No hay nada que mostrar todavía.",
   "stateErrorTitle": "Algo salió mal",
   "stateOfflineTitle": "Sin conexión",
@@ -16,9 +19,347 @@
   "errorValidation": "Los datos enviados no son válidos.",
   "errorServer": "El servidor tuvo un problema. Inténtalo más tarde.",
   "errorUnknown": "Ocurrió un error inesperado.",
-  "placeholderScreen": "Pantalla «{name}» pendiente de implementar",
-  "@placeholderScreen": {
-    "description": "Marcador de posición de Fase 0; se elimina al implementar la pantalla real",
-    "placeholders": { "name": { "type": "String" } }
-  }
+  "errorInvalidCredentials": "Correo o contraseña incorrectos.",
+  "errorEmailNotConfirmed": "Debes verificar tu correo antes de entrar. Revisa tu bandeja de entrada.",
+  "errorEmailAlreadyRegistered": "Ese correo ya tiene una cuenta. Inicia sesión.",
+  "errorWeakPassword": "La contraseña es muy débil. Prueba con una más larga.",
+  "errorRateLimited": "Hiciste demasiados intentos. Espera un momento e inténtalo de nuevo.",
+  "fieldRequired": "Este campo es obligatorio.",
+  "fieldEmailInvalid": "Escribe un correo válido.",
+  "fieldPasswordTooShort": "Usa al menos {min} caracteres.",
+  "@fieldPasswordTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "fieldPasswordMismatch": "Las contraseñas no coinciden.",
+  "authLoginTitle": "Entra para cuidar a tu bebé",
+  "authLoginSubtitle": "Tu cuna y los datos de tu bebé te esperan.",
+  "authEmailLabel": "Correo electrónico",
+  "authEmailHint": "nombre@correo.com",
+  "authPasswordLabel": "Contraseña",
+  "authShowPassword": "Mostrar contraseña",
+  "authHidePassword": "Ocultar contraseña",
+  "authSignIn": "Iniciar sesión",
+  "authForgotPassword": "¿Olvidaste tu contraseña?",
+  "authNoAccount": "¿Aún no tienes cuenta?",
+  "authSignUpLink": "Regístrate",
+  "authOrContinueWith": "o continúa con",
+  "authContinueGoogle": "Continuar con Google",
+  "authContinueApple": "Continuar con Apple",
+  "authSignUpTitle": "Crea tu cuenta",
+  "authSignUpSubtitle": "Solo te tomará un minuto.",
+  "authConfirmPasswordLabel": "Confirmar contraseña",
+  "authCreateAccount": "Crear cuenta",
+  "authHaveAccount": "¿Ya tienes cuenta?",
+  "authSignInLink": "Inicia sesión",
+  "authVerifyTitle": "Revisa tu correo",
+  "authVerifyBody": "Enviamos un enlace de verificación a {email}. Ábrelo desde este teléfono para activar tu cuenta.",
+  "@authVerifyBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "authResend": "Reenviar correo",
+  "authResendDone": "Te enviamos el correo de nuevo.",
+  "authBackToSignIn": "Volver a iniciar sesión",
+  "authForgotTitle": "Recupera tu contraseña",
+  "authForgotSubtitle": "Escribe tu correo y te enviaremos un enlace para crear una nueva.",
+  "authSendLink": "Enviar enlace",
+  "authForgotSent": "Si el correo está registrado, te enviamos un enlace para restablecer tu contraseña.",
+  "authResetTitle": "Crea una nueva contraseña",
+  "authResetSubtitle": "Elige una contraseña que no uses en otros sitios.",
+  "authNewPasswordLabel": "Nueva contraseña",
+  "authSavePassword": "Guardar contraseña",
+  "permissionsTitle": "Para acompañarte mejor",
+  "permissionsSubtitle": "Tú decides. Puedes cambiar estos permisos en cualquier momento.",
+  "permissionNotificationsTitle": "Notificaciones",
+  "permissionNotificationsBody": "Para avisarte de cambios importantes.",
+  "permissionMicrophoneTitle": "Micrófono",
+  "permissionMicrophoneBody": "Para hablarle desde el altavoz.",
+  "permissionGranted": "Concedido",
+  "permissionDenied": "No concedido",
+  "permissionOpenSettings": "Abrir ajustes del sistema",
+  "permissionSettingsHint": "Para cambiar un permiso, ábrelo desde los ajustes del sistema.",
+  "navHome": "Inicio",
+  "navAlerts": "Alertas",
+  "navRecords": "Registros",
+  "navAccessories": "Ampliaciones",
+  "navSettings": "Ajustes",
+  "tabComingSoon": "Esta sección estará disponible pronto.",
+  "settingsAccount": "Cuenta",
+  "settingsPermissions": "Permisos",
+  "settingsPermissionsSubtitle": "Notificaciones y micrófono",
+  "settingsSignOut": "Cerrar sesión",
+  "commonSave": "Guardar",
+  "commonCancel": "Cancelar",
+  "errorLastActiveProfile": "Debe quedar al menos un perfil activo.",
+  "babyFormFirstTitle": "Cuéntanos de tu bebé",
+  "babyFormFirstSubtitle": "Crea su perfil para organizar sus datos. Podrás agregar más después.",
+  "babyFormNewTitle": "Nuevo bebé",
+  "babyFormEditTitle": "Editar perfil",
+  "babyNameLabel": "Nombre",
+  "babyNameHint": "Nombre del bebé",
+  "babyBirthLabel": "Fecha de nacimiento",
+  "babyBirthHint": "Elige una fecha",
+  "babyWeightLabel": "Peso (kg)",
+  "babyWeightHint": "Ej. 5,84",
+  "babyCreate": "Crear perfil",
+  "babyNameRequired": "Escribe un nombre.",
+  "babyNameTooLong": "Usa como máximo {max} caracteres.",
+  "@babyNameTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "babyBirthRequired": "Elige la fecha de nacimiento.",
+  "babyBirthFuture": "La fecha no puede ser futura.",
+  "babyWeightRequired": "Escribe el peso.",
+  "babyWeightInvalid": "Escribe un número válido, por ejemplo 5,84.",
+  "babyWeightRange": "El peso debe ser mayor que 0 y de hasta {max} kg.",
+  "@babyWeightRange": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "babyWeightKg": "{value} kg",
+  "@babyWeightKg": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "babyAgeDays": "{count, plural, =1{1 día} other{{count} días}}",
+  "@babyAgeDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "babyAgeWeeks": "{count, plural, =1{1 semana} other{{count} semanas}}",
+  "@babyAgeWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "babyAgeMonths": "{count, plural, =1{1 mes} other{{count} meses}}",
+  "@babyAgeMonths": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "babyAgeYears": "{count, plural, =1{1 año} other{{count} años}}",
+  "@babyAgeYears": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "babiesTitle": "Perfiles de bebé",
+  "babiesActiveSection": "Activos",
+  "babiesArchivedSection": "Archivados",
+  "babiesAdd": "Agregar bebé",
+  "babyActiveBadge": "Activo",
+  "babyLastProfileNote": "Debe quedar al menos un perfil activo.",
+  "babyMenuEdit": "Editar",
+  "babyMenuArchive": "Archivar",
+  "babyMenuRestore": "Restaurar",
+  "babyMenuDelete": "Eliminar definitivamente",
+  "babyDeleteTitle": "¿Eliminar el perfil de {name}?",
+  "@babyDeleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "babyDeleteBody": "Se borrarán de forma definitiva el perfil y todo su historial. Esta acción no se puede deshacer.",
+  "babyDeleteConfirm": "Eliminar",
+  "babyArchivedSnack": "Perfil archivado",
+  "babyRestoredSnack": "Perfil restaurado",
+  "babyDeletedSnack": "Perfil eliminado",
+  "brandName": "Minuta",
+  "homeNowSection": "Ahora",
+  "homeTrendsSection": "Tendencias",
+  "homeActivitySection": "Actividad reciente",
+  "homeNoActiveBaby": "Elige un perfil de bebé en Ajustes.",
+  "homeLinkAction": "Vincular",
+  "homeMattressNotLinked": "Vincula el colchón para ver si el bebé está acostado y su peso.",
+  "homeCradleNotLinked": "Vincula la cuna para ver la temperatura y la humedad.",
+  "homeLightsNotLinked": "Vincula el sistema de luces para controlarlo desde aquí.",
+  "homeMattressOccupied": "Bebé en el colchón",
+  "homeMattressEmpty": "Colchón vacío",
+  "homeNoReadingYet": "Sin lecturas todavía",
+  "homeLightsOn": "Encendidas · {brightness} %",
+  "@homeLightsOn": {
+    "placeholders": {
+      "brightness": {
+        "type": "int"
+      }
+    }
+  },
+  "homeLightsOff": "Apagadas",
+  "homeWeightChartTitle": "Peso · últimos 14 días",
+  "homeWeightChartEmpty": "Aún no hay pesajes. Aparecerán cuando el colchón mida al bebé.",
+  "homeTemperatureChartTitle": "Temperatura · últimas 24 h",
+  "homeHumidityChartTitle": "Humedad · últimas 24 h",
+  "homeEnvironmentChartEmpty": "Aún no hay lecturas de la cuna.",
+  "homeActivityEmpty": "Todavía no hay actividad. Aquí verás lo que detecten tus ampliaciones.",
+  "homeSectionError": "No pudimos cargar esta sección.",
+  "eventPresenceDetected": "Bebé detectado en el colchón",
+  "eventAbsenceDetected": "Se dejó de detectar al bebé",
+  "eventMovementDetected": "Movimiento en el colchón",
+  "eventDetectionStarted": "Inició el periodo de detección",
+  "eventDetectionEnded": "Terminó el periodo de detección",
+  "eventTemperatureHigh": "Temperatura alta en la cuna",
+  "eventTemperatureLow": "Temperatura baja en la cuna",
+  "eventHumidityHigh": "Humedad alta en la cuna",
+  "eventHumidityLow": "Humedad baja en la cuna",
+  "eventLightsChanged": "Cambio en las luces",
+  "eventFeedingStarted": "Inició la alimentación",
+  "eventFeedingCompleted": "Terminó la alimentación",
+  "eventFeedingReminder": "Recordatorio de alimentación",
+  "eventToyMotion": "Movimiento en el juguete",
+  "eventToySessionStarted": "Inició la sesión de juego",
+  "eventToySessionEnded": "Terminó la sesión de juego",
+  "eventDoorOpened": "Se abrió la puerta",
+  "eventRoomMotion": "Movimiento en la habitación",
+  "eventOther": "Evento",
+  "babyWeightFromMattressNote": "El peso lo mide el colchón. Cuando el bebé esté acostado, usa «Pesar ahora» en Ajustes → Perfiles de bebé.",
+  "babyWeightPending": "Sin pesar",
+  "babyMenuWeigh": "Pesar ahora",
+  "babyWeighedSnack": "Peso actualizado con el colchón",
+  "errorMattressNotLinked": "Vincula el colchón en Ampliaciones para poder pesar al bebé.",
+  "errorMattressOffline": "El colchón no está en línea. Revisa que esté conectado y vuelve a intentar.",
+  "errorNoWeightReading": "El colchón no detecta peso. Acuesta al bebé y vuelve a intentar.",
+  "settingsBabies": "Perfiles de bebé",
+  "settingsBabiesSubtitle": "{count, plural, =1{1 perfil activo} other{{count} perfiles activos}}",
+  "@settingsBabiesSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "profilesErrorTitle": "No pudimos cargar los perfiles",
+  "errorInvalidDeviceCode": "Ese código no existe o ya fue usado. Revisa que esté bien escrito.",
+  "accessoriesEmptyTitle": "Aún no tienes ampliaciones",
+  "accessoriesEmptyBody": "Vincula la cuna, el sistema de luces u otra ampliación con el código impreso en el módulo.",
+  "accessoriesAdd": "Vincular ampliación",
+  "deviceKindMattress": "Colchón",
+  "deviceKindCradle": "Cuna",
+  "deviceKindLights": "Sistema de luces",
+  "deviceKindFeeder": "Sistema de alimentación",
+  "deviceKindToy": "Juguete interactivo",
+  "deviceKindRoom": "Sistema de habitación",
+  "deviceKindUnknown": "Ampliación",
+  "deviceOnline": "En línea",
+  "deviceOffline": "Sin conexión",
+  "deviceSoon": "Disponible pronto",
+  "deviceNotFound": "No encontramos este módulo.",
+  "deviceLightsOn": "Encendidas · {brightness} %",
+  "@deviceLightsOn": {
+    "placeholders": {
+      "brightness": {
+        "type": "int"
+      }
+    }
+  },
+  "deviceLightsOff": "Apagadas",
+  "deviceCradleReading": "{temperature} °C · {humidity} % HR",
+  "@deviceCradleReading": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      },
+      "humidity": {
+        "type": "String"
+      }
+    }
+  },
+  "deviceCradleNoData": "Sin lecturas todavía",
+  "claimTitle": "Vincular ampliación",
+  "claimIntro": "Escribe el código de 16 caracteres impreso en el módulo. La ampliación se configura con sus valores de fábrica.",
+  "claimCodeLabel": "Código del módulo",
+  "claimCodeHint": "XXXX-XXXX-XXXX-XXXX",
+  "claimNameLabel": "Nombre (opcional)",
+  "claimNameHint": "Ej. Cuna de Emma",
+  "claimSubmit": "Vincular",
+  "claimCodeEmpty": "Escribe el código del módulo.",
+  "claimCodeInvalid": "El código debe tener 16 letras y números.",
+  "claimSuccess": "Ampliación vinculada",
+  "lightsTitle": "Luces de la cuna",
+  "lightsPower": "Luces",
+  "lightsStatusOn": "Encendidas",
+  "lightsStatusOff": "Apagadas",
+  "lightsBrightness": "Intensidad",
+  "lightsSpeed": "Velocidad del patrón",
+  "lightsPercent": "{value} %",
+  "@lightsPercent": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "lightsTimer": "Temporizador",
+  "lightsTimerNone": "Sin temporizador",
+  "lightsTimerMinutes": "{minutes} min",
+  "@lightsTimerMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "lightsTimerCustom": "Otro…",
+  "lightsTimerRemaining": "Se apagarán en {minutes} min",
+  "@lightsTimerRemaining": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "lightsTimerNeedsOn": "Enciende las luces para programar un temporizador.",
+  "lightsTimerDialogTitle": "Duración del temporizador",
+  "lightsTimerDialogLabel": "Minutos (1 a 720)",
+  "lightsTimerDialogInvalid": "Escribe un número de 1 a 720.",
+  "lightsTimerDialogConfirm": "Programar",
+  "lightsOfflineNote": "Sin conexión con las luces: los cambios se aplicarán cuando se reconecten.",
+  "cradleTitle": "Cuna",
+  "cradleTemperature": "Temperatura",
+  "cradleHumidity": "Humedad",
+  "levelOk": "Normal",
+  "levelHigh": "Alta",
+  "levelLow": "Baja",
+  "levelUnknown": "Sin datos",
+  "cradleThresholdsTitle": "Umbrales de alerta",
+  "cradleThresholdsHelp": "Recibirás una alerta cuando la medición salga de este rango. Deja un campo vacío para no poner límite.",
+  "cradleTempMin": "Temperatura mínima (°C)",
+  "cradleTempMax": "Temperatura máxima (°C)",
+  "cradleHumMin": "Humedad mínima (%)",
+  "cradleHumMax": "Humedad máxima (%)",
+  "cradleSave": "Guardar umbrales",
+  "cradleSaved": "Umbrales guardados",
+  "cradleOfflineNote": "La cuna no responde desde hace un momento: los datos mostrados pueden no estar al día.",
+  "thresholdErrorNotNumber": "Escribe un número.",
+  "thresholdErrorRangeTemp": "Debe estar entre -20 y 60.",
+  "thresholdErrorRangeHum": "Debe estar entre 0 y 100.",
+  "thresholdErrorOrder": "El máximo debe ser mayor que el mínimo."
 }
