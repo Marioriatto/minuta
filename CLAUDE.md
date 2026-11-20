@@ -41,7 +41,7 @@
 | Luces = 4 LED en pines PWM | Permite brillo y patrón giratorio (RF-20/21) con un UNO. |
 | Alcance de la entrega de hoy: vincular + luces + cuna | Es lo que cabe en un sprint corto y se puede probar de punta a punta. |
 
-**Fuera de alcance por ahora:** iniciar/detener detección desde la app (RF-12), alimentación, juguete, puerta/cámara, voz (RF-19), Edge Function de push FCM + webhook, vaciado de `storage_cleanup`, exportación `.xlsx`.
+**Fuera de alcance por ahora:** iniciar/detener detección desde la app (RF-12), alimentación, juguete, puerta/cámara, voz (RF-19), vaciado de `storage_cleanup`, exportación `.xlsx`.
 
 ## 3. Stack
 
@@ -186,6 +186,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 | Firmware y puente | Escritos; 30 tests Python pasando en mi entorno; **sin probar con hardware** |
 | Flutter (devices/lights/cradle) | Escrito, sintaxis revisada; **sin `analyze` ni `test` reales** |
 | Fase 2 (perfiles de bebé) | Sin validación del usuario |
+| Push (RF-03) | **Verificado de punta a punta** el 2026-11-19: puente `--simulate alarm` → alerta `temperature_high` de la cuna → función `push` (`sent:1`) → notificación recibida en el teléfono |
 
 ### Checklist de primera ejecución
 1. `flutter gen-l10n && dart fix --apply && dart format lib test && flutter analyze && flutter test`
@@ -213,7 +214,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 
 ## 10. Pendiente y riesgos
 
-**Siguiente:** iniciar/detener detección (RF-12); aplicar migración `push_alerts` + desplegar Edge Function `push` y configurar Firebase (código listo); validar Fase 2; limpiar huérfanos de `lib/core/router/`; migración inicial en `supabase/`; revocar `UPDATE` directo en `devices.config`; confirmar `.gitignore` de `google_secret.txt`; Figma si se aportan diseños.
+**Siguiente:** iniciar/detener detección (RF-12); validar Fase 2; limpiar huérfanos de `lib/core/router/`; migración inicial en `supabase/`; revocar `UPDATE` directo en `devices.config`; confirmar `.gitignore` de `google_secret.txt`; Figma si se aportan diseños.
 
 **Backlog:** en Jira, proyecto **CM** (10 épicas, 32 historias, 75 subtareas, 139 puntos). Detalle y mapeo en `docs/backlog.md`.
 
