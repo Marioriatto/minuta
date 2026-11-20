@@ -18,7 +18,7 @@ enum DeviceKind {
       };
 
   /// Tipos con pantalla propia en esta versión de la app.
-  bool get hasControls => this == cradle || this == lights;
+  bool get hasControls => this == mattress || this == cradle || this == lights;
 }
 
 /// Un módulo está en línea si habló con el servidor hace poco.

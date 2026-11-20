@@ -22,6 +22,7 @@ abstract final class AppRoutes {
 
   static String accessoriesLights(String id) => '/accessories/lights/$id';
   static String accessoriesCradle(String id) => '/accessories/cradle/$id';
+  static String accessoriesMattress(String id) => '/accessories/mattress/$id';
   static const settings = '/settings';
   static const settingsPermissions = '/settings/permissions';
   static const settingsBabies = '/settings/babies';

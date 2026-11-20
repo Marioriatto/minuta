@@ -41,7 +41,7 @@
 | Luces = 4 LED en pines PWM | Permite brillo y patrón giratorio (RF-20/21) con un UNO. |
 | Alcance de la entrega de hoy: vincular + luces + cuna | Es lo que cabe en un sprint corto y se puede probar de punta a punta. |
 
-**Fuera de alcance por ahora:** iniciar/detener detección desde la app (RF-12), alimentación, juguete, puerta/cámara, voz (RF-19), vaciado de `storage_cleanup`, exportación `.xlsx`.
+**Fuera de alcance por ahora:** alimentación, juguete, puerta/cámara, voz (RF-19), vaciado de `storage_cleanup`, exportación `.xlsx`.
 
 ## 3. Stack
 
@@ -151,6 +151,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 ### Funciones SQL relevantes
 - Dispositivos: `provision_device`, `claim_device` (código de 16 alfanuméricos; errores `invalid_or_used_code`, `device_not_found`), `authenticate_device`, `device_ingest`, `device_poll`, `device_ack_command`.
 - Bebés: `weigh_baby(p_baby_id)` ("Pesar ahora": copia `reported_state.weight_kg` del colchón al perfil); trigger `guard_baby_weight` impide escribir `babies.weight` por otra vía.
+- Detección (RF-12): `start_detection(p_device_id, p_baby_id, p_minutes default null)` (exige colchón propio, bebé activo y que no haya otro periodo vigente; registra `detection_started`) y `stop_detection()` (cierra el vigente; registra `detection_ended`). Errores: `mattress_not_linked`, `baby_not_found`, `invalid_duration`, `detection_already_active`, `no_active_detection`. Las sobrecargas viejas (`p_ends_at` / `p_period_id`) se borraron.
 - App → config: `set_lights(p_device_id, p_on, p_brightness, p_speed, p_minutes default null, p_keep_timer default false)`, `set_thresholds`.
 - Mantenimiento: `expire_lights_timers` (job **pg_cron** `cm-expire-lights`, cada minuto).
 - Triggers: `bump_config_version`, `fill_device_context`, `evaluate_thresholds`, `create_alert_from_event`, `audit_devices`.
@@ -165,7 +166,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 `{"on":false,"brightness":50,"speed":50,"timer_minutes":null,"ends_at":null}`
 
 ### Migraciones
-- Aplicadas en producción: `lights_cradle`, `lights_keep_timer` (una sola sobrecarga de `set_lights`) y `baby_weight_from_mattress` (`babies.weight` nullable + `weigh_baby` + trigger `guard_baby_weight`).
+- Aplicadas en producción: `lights_cradle`, `lights_keep_timer` (una sola sobrecarga de `set_lights`), `baby_weight_from_mattress` (`babies.weight` nullable + `weigh_baby` + trigger `guard_baby_weight`), `push_alerts`, `detection_rpc` y `drop_legacy_detection_overloads`.
 - Ojo: en producción el dueño de `babies` es **`owner_id`** (no `parent_id` como dice `docs/fase2_contrato.md`).
 - **Falta** traer a `supabase/` del proyecto la migración inicial (`20261112000000_init.sql` / `reset.sql`).
 
@@ -207,6 +208,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 | Vinculación de módulos | `claim_device_page.dart`, `claim_device` |
 | RF-03 / APP-001 push y pestaña Alertas | `features/alerts`, `features/notifications`, Edge Function `push`, migración `push_alerts` (ver `docs/push_firebase.md`) |
 | RF-05 dashboard de Inicio | `features/dashboard` (`HomeDashboardPage`, `readings_hourly`, `events`); estados vacíos para cuenta nueva |
+| RF-12 / APP-010 periodo de detección | `features/detection` (`StartDetection`, `StopDetection`, `activeDetectionProvider`), `features/mattress/presentation/mattress_page.dart` (ruta `accessories/mattress/:id`), `start_detection` / `stop_detection` |
 | RF-11 peso del bebé medido por el colchón | `WeighBaby`, menú "Pesar ahora" en `babies_page.dart`, `weigh_baby` |
 | Login con Google | `signInWithOAuth` ya implementado; se activa con `SOCIAL_LOGIN=true` + proveedor en Supabase |
 | Ingesta de sensores | Puente + Edge Function `device` + `device_ingest` |
@@ -214,7 +216,7 @@ Estado: **desplegada (v1) pero aún no ejercitada contra el proyecto real**. Pri
 
 ## 10. Pendiente y riesgos
 
-**Siguiente:** iniciar/detener detección (RF-12); validar Fase 2; limpiar huérfanos de `lib/core/router/`; migración inicial en `supabase/`; revocar `UPDATE` directo en `devices.config`; confirmar `.gitignore` de `google_secret.txt`; Figma si se aportan diseños.
+**Siguiente:** probar RF-12 en el teléfono con el colchón vinculado; bajar latencia a ≤ 3 s (RNF-01: hoy lotes cada 10 s); registrar `detection_ended` cuando un periodo con duración vence solo; validar Fase 2; limpiar huérfanos de `lib/core/router/`; migración inicial en `supabase/`; revocar `UPDATE` directo en `devices.config`; confirmar `.gitignore` de `google_secret.txt`; Figma si se aportan diseños.
 
 **Backlog:** en Jira, proyecto **CM** (10 épicas, 32 historias, 75 subtareas, 139 puntos). Detalle y mapeo en `docs/backlog.md`.
 

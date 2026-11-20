@@ -22,5 +22,10 @@ extension AppFailureL10n on AppLocalizations {
             MattressWeightProblem.offline => errorMattressOffline,
             MattressWeightProblem.noReading => errorNoWeightReading,
           },
+        DetectionFailure(:final problem) => switch (problem) {
+            DetectionProblem.alreadyActive => errorDetectionAlreadyActive,
+            DetectionProblem.notActive => errorDetectionNotActive,
+            DetectionProblem.noActiveBaby => errorDetectionNoBaby,
+          },
       };
 }

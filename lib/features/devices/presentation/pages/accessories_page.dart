@@ -99,6 +99,11 @@ class _DeviceTile extends StatelessWidget {
 
   String _detail(AppLocalizations l10n) {
     switch (device.kind) {
+      case DeviceKind.mattress:
+        final kg = device.weightKg;
+        return kg == null
+            ? l10n.deviceMattressNoData
+            : l10n.deviceMattressReading(formatDecimal(kg));
       case DeviceKind.cradle:
         final t = device.temperatureC;
         final h = device.humidityPct;
@@ -116,6 +121,7 @@ class _DeviceTile extends StatelessWidget {
   }
 
   String? _route() => switch (device.kind) {
+        DeviceKind.mattress => AppRoutes.accessoriesMattress(device.id),
         DeviceKind.cradle => AppRoutes.accessoriesCradle(device.id),
         DeviceKind.lights => AppRoutes.accessoriesLights(device.id),
         _ => null,

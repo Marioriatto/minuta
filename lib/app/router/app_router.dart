@@ -17,6 +17,7 @@ import '../../features/dashboard/presentation/home_dashboard_page.dart';
 import '../../features/devices/presentation/pages/accessories_page.dart';
 import '../../features/devices/presentation/pages/claim_device_page.dart';
 import '../../features/lights/presentation/lights_page.dart';
+import '../../features/mattress/presentation/mattress_page.dart';
 import '../../features/permissions/presentation/permissions_intro_page.dart';
 import '../../features/permissions/presentation/permissions_status_page.dart';
 import '../../features/settings/presentation/settings_page.dart';
@@ -176,6 +177,12 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'cradle/:id',
                     builder: (_, state) => CradlePage(
+                      deviceId: state.pathParameters['id']!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'mattress/:id',
+                    builder: (_, state) => MattressPage(
                       deviceId: state.pathParameters['id']!,
                     ),
                   ),

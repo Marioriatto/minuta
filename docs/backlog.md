@@ -189,7 +189,7 @@ Requisitos: RF-11, RF-12, RF-13, RF-14 · RNF-05.
   - Durante el periodo se generan alertas de movimiento y ausencia; fuera de él, no.
   - El periodo se guarda en la base con inicio y fin.
 - **Prioridad:** Alta · **Estimación:** 8 · **Trazabilidad:** RF-12
-- **Estado:** Pendiente (el puente ya respeta "periodo abierto"; falta la app).
+- **Estado:** Hecho (20-nov-2026): pantalla del colchón con iniciar/detener y duración opcional (sin límite, 1 h, 2 h, 8 h); RPC `start_detection` / `stop_detection`. Falta probarlo con el colchón real.
 - **Tareas:**
   1. Tabla / RPC de periodos de detección (iniciar, detener).
   2. Enviar el estado del periodo al puente por `poll`.

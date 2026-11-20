@@ -84,6 +84,23 @@ final class MattressWeightFailure extends AppFailure {
   final MattressWeightProblem problem;
 }
 
+enum DetectionProblem {
+  /// Ya hay un periodo de detección vigente.
+  alreadyActive,
+
+  /// No hay periodo vigente que detener.
+  notActive,
+
+  /// No hay perfil de bebé activo al que asociar el periodo.
+  noActiveBaby,
+}
+
+/// No se pudo iniciar o detener el periodo de detección (RF-12).
+final class DetectionFailure extends AppFailure {
+  const DetectionFailure(this.problem, {super.cause});
+  final DetectionProblem problem;
+}
+
 /// Envuelve cualquier error inesperado en un [UnknownFailure] sin depender de
 /// ninguna librería externa (usable desde el dominio).
 abstract final class UnknownFailureFor {

@@ -384,5 +384,45 @@
   "thresholdErrorNotNumber": "Escribe un número.",
   "thresholdErrorRangeTemp": "Debe estar entre -20 y 60.",
   "thresholdErrorRangeHum": "Debe estar entre 0 y 100.",
-  "thresholdErrorOrder": "El máximo debe ser mayor que el mínimo."
+  "thresholdErrorOrder": "El máximo debe ser mayor que el mínimo.",
+  "mattressTitle": "Colchón",
+  "mattressWeight": "Peso actual",
+  "mattressOfflineNote": "El colchón no responde desde hace un momento: puedes iniciar la detección, pero no habrá alertas hasta que se reconecte.",
+  "deviceMattressReading": "{kg} kg",
+  "@deviceMattressReading": {
+    "placeholders": { "kg": { "type": "String" } }
+  },
+  "deviceMattressNoData": "Sin lecturas aún",
+  "detectionTitle": "Periodo de detección",
+  "detectionActive": "Detección activa",
+  "detectionInactive": "Detección detenida",
+  "detectionActiveSinceUnlimited": "Activa desde las {since}, sin límite de tiempo.",
+  "@detectionActiveSinceUnlimited": {
+    "placeholders": { "since": { "type": "String" } }
+  },
+  "detectionActiveSinceUntil": "Activa desde las {since} hasta las {until}.",
+  "@detectionActiveSinceUntil": {
+    "placeholders": {
+      "since": { "type": "String" },
+      "until": { "type": "String" }
+    }
+  },
+  "detectionHelp": "Inícialo al acostar a {name}: el colchón avisará si se mueve o si deja de detectarlo.",
+  "@detectionHelp": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "detectionNeedsBaby": "Crea un perfil de bebé en Ajustes para poder iniciar la detección.",
+  "detectionDurationUnlimited": "Sin límite",
+  "detectionDurationHours": "{hours, plural, =1{1 hora} other{{hours} horas}}",
+  "@detectionDurationHours": {
+    "placeholders": { "hours": { "type": "int" } }
+  },
+  "detectionStart": "Iniciar detección",
+  "detectionStop": "Detener detección",
+  "detectionStartedMessage": "Detección iniciada: el colchón empezará a vigilar en unos segundos.",
+  "detectionStoppedMessage": "Detección detenida.",
+  "detectionLoadError": "No pudimos cargar el estado de la detección.",
+  "errorDetectionAlreadyActive": "Ya hay una detección activa. Detenla antes de iniciar otra.",
+  "errorDetectionNotActive": "No hay ninguna detección activa.",
+  "errorDetectionNoBaby": "Elige o crea un perfil de bebé antes de iniciar la detección."
 }

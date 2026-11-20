@@ -175,6 +175,10 @@ class _ModulesSection extends ConsumerWidget {
               status: mattress == null
                   ? null
                   : _mattressStatus(l10n, mattress, now),
+              onTap: mattress == null
+                  ? null
+                  : () =>
+                      context.push(AppRoutes.accessoriesMattress(mattress.id)),
             ),
             const SizedBox(height: 10),
             _ModuleTile(

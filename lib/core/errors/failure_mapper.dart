@@ -26,6 +26,14 @@ AppFailure mapToFailure(Object error) {
         error.message.contains('baby_not_found')) {
       return NotFoundFailure(cause: error);
     }
+    // start_detection / stop_detection (migración detection_rpc).
+    if (error.message.contains('detection_already_active') ||
+        error.message.contains('detection_period_overlap')) {
+      return DetectionFailure(DetectionProblem.alreadyActive, cause: error);
+    }
+    if (error.message.contains('no_active_detection')) {
+      return DetectionFailure(DetectionProblem.notActive, cause: error);
+    }
     final weighProblem = _weighProblem(error.message);
     if (weighProblem != null) {
       return MattressWeightFailure(weighProblem, cause: error);
