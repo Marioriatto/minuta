@@ -20,7 +20,7 @@ lights = ""
 
 [tuning]
 sample_interval_s = 10        # cada cuánto se guarda una lectura en la base
-flush_interval_s = 10         # cada cuánto se sube el lote
+flush_interval_s = 2          # cada cuánto se sube el lote (lo urgente sube al instante, RNF-01)
 poll_interval_s = 3           # cada cuánto se consultan comandos y configuración
 presence_threshold_kg = 1.0   # por debajo se considera colchón vacío
 absence_confirm_s = 10        # tiempo bajo el umbral antes de declarar ausencia

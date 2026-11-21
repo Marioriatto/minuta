@@ -191,3 +191,74 @@ def test_simulator_alarm_scenario_end_to_end():
     assert "presence_detected" in kinds and "absence_detected" in kinds
     temps = [r["value"] for r in apis["cradle"].ingested[0][0] if r["metric"] == "temperature"]
     assert max(temps) > 26
+
+
+# ---- RNF-01: lo urgente se sube sin esperar el lote ---------------------------
+
+def _cradle_with_max(max_c=26):
+    return FakeApi({"commands": [], "detection": None,
+                    "config": {"thresholds": {"temperature": {"min": 18, "max": max_c},
+                                              "humidity": {"min": 30, "max": 60}}}})
+
+
+def test_event_is_uploaded_immediately():
+    b, link, clock, apis = make()
+    b.flush()                                # primer lote (vacío) marca el intervalo
+    clock.t += 1
+    link.inbox = ["R,5.84,24.1,50.0"]        # presencia => evento
+    b.process_serial()
+    clock.t += 1                             # 1 s < intervalo de 10 s
+    b.flush()
+    assert [e["type"] for e in apis["mattress"].ingested[-1][1]] == ["presence_detected"]
+
+
+def test_threshold_crossing_is_stored_and_uploaded_immediately():
+    b, link, clock, apis = make(mattress=FakeApi(), cradle=_cradle_with_max())
+    b.poll(force=True)
+    assert b.thresholds["temperature"] == (18.0, 26.0)
+    link.inbox = ["R,nan,25.0,50.0"]
+    b.process_serial()
+    b.flush(force=True)                      # sube la lectura normal
+    clock.t += 2
+    link.inbox = ["R,nan,26.4,50.0"]         # 2 s después: cruza el máximo
+    b.process_serial()
+    b.flush()
+    temps = [r["value"] for r in apis["cradle"].ingested[-1][0] if r["metric"] == "temperature"]
+    assert temps == [26.4]
+
+
+def test_staying_out_of_range_does_not_upload_every_sample():
+    b, link, clock, apis = make(mattress=FakeApi(), cradle=_cradle_with_max())
+    b.poll(force=True)
+    link.inbox = ["R,nan,27.0,50.0"]
+    b.process_serial()
+    b.flush(force=True)
+    sent = len(apis["cradle"].ingested)
+    clock.t += 2
+    link.inbox = ["R,nan,27.2,50.0"]         # sigue alta: no es urgente
+    b.process_serial()
+    b.flush()
+    assert len(apis["cradle"].ingested) == sent
+
+
+def test_back_to_normal_is_urgent_too():
+    b, link, clock, apis = make(mattress=FakeApi(), cradle=_cradle_with_max())
+    b.poll(force=True)
+    link.inbox = ["R,nan,27.0,50.0"]
+    b.process_serial()
+    b.flush(force=True)
+    clock.t += 2
+    link.inbox = ["R,nan,25.5,50.0"]         # vuelve al rango: reinicia alert_state
+    b.process_serial()
+    b.flush()
+    temps = [r["value"] for r in apis["cradle"].ingested[-1][0] if r["metric"] == "temperature"]
+    assert temps == [25.5]
+
+
+def test_malformed_thresholds_are_ignored():
+    cradle = FakeApi({"commands": [], "detection": None,
+                      "config": {"thresholds": {"temperature": {"min": "x", "max": None},
+                                                "humidity": "raro"}}})
+    b, link, clock, apis = make(mattress=FakeApi(), cradle=cradle)
+    b.poll(force=True)
+    assert b.thresholds == {"temperature": (None, None)}

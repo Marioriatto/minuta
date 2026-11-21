@@ -74,6 +74,11 @@ class Bridge:
         self._last_light: tuple[int, int, int] | None = None
         self._claimed_warned: set[str] = set()
         self.last_raw: float | None = None
+        # RNF-01 (≤ 3 s): lo urgente se sube sin esperar el intervalo del lote.
+        self._urgent = False
+        # Umbrales de la cuna (config.thresholds) y último nivel visto por métrica.
+        self.thresholds: dict[str, tuple[float | None, float | None]] = {}
+        self._levels: dict[str, str] = {}
 
     # ---- entrada serie -----------------------------------------------------
     def process_serial(self) -> None:
@@ -95,11 +100,27 @@ class Bridge:
             elif msg is None and line:
                 log.debug("Línea ignorada: %r", line)
 
+    def _level(self, metric: str, value: float) -> str:
+        """Mismo criterio que `evaluate_thresholds` en la base: high / low / ok."""
+        low, high = self.thresholds.get(metric, (None, None))
+        if high is not None and value > high:
+            return "high"
+        if low is not None and value < low:
+            return "low"
+        return "ok"
+
     def _store(self, device: str, metric: str, value: float | None, now: float) -> None:
         if value is None or device not in self.outbox:
             return
-        if now - self._last_stored.get(metric, -1e12) < self.tuning.sample_interval_s:
+        # Si la lectura cruza un umbral (o vuelve al rango), se guarda y se sube
+        # ya, aunque no haya pasado el intervalo: la alerta (RF-18) no espera.
+        level = self._level(metric, value)
+        crossed = level != self._levels.get(metric, "ok")
+        self._levels[metric] = level
+        if not crossed and now - self._last_stored.get(metric, -1e12) < self.tuning.sample_interval_s:
             return
+        if crossed:
+            self._urgent = True
         self._last_stored[metric] = now
         self.outbox[device].readings.append(
             {"metric": metric, "value": round(value, 3), "recorded_at": iso(now)})
@@ -120,6 +141,7 @@ class Bridge:
 
     def _queue_event(self, device: str, ev: DetectedEvent) -> None:
         log.info("Evento %s", ev.type)
+        self._urgent = True
         self.outbox[device].events.append({
             "type": ev.type, "description": ev.description, "payload": ev.payload,
             "occurred_at": iso(ev.at),
@@ -128,9 +150,10 @@ class Bridge:
     # ---- subida ------------------------------------------------------------
     def flush(self, force: bool = False) -> None:
         now = self.clock()
-        if not force and now - self._last_flush < self.tuning.flush_interval_s:
+        if not force and not self._urgent and now - self._last_flush < self.tuning.flush_interval_s:
             return
         self._last_flush = now
+        self._urgent = False
         for name, box in self.outbox.items():
             if box.empty():
                 continue
@@ -169,10 +192,29 @@ class Bridge:
             self._claimed_warned.discard(name)
             if name == "mattress":
                 self.detection_active = data.get("detection") is not None
+            if name == "cradle":
+                self._apply_thresholds(data)
             if name == "lights":
                 self._apply_lights(data)
             for cmd in data.get("commands", []):
                 self._run_command(name, api, cmd)
+
+    def _apply_thresholds(self, data: dict) -> None:
+        """Umbrales de la cuna (RF-18) tal como los guarda `set_thresholds`."""
+        cfg = data.get("config") or {}
+        raw = cfg.get("thresholds") if isinstance(cfg, dict) else None
+        parsed: dict[str, tuple[float | None, float | None]] = {}
+        if isinstance(raw, dict):
+            for metric in ("temperature", "humidity"):
+                group = raw.get(metric)
+                if not isinstance(group, dict):
+                    continue
+                low, high = group.get("min"), group.get("max")
+                parsed[metric] = (
+                    float(low) if isinstance(low, (int, float)) else None,
+                    float(high) if isinstance(high, (int, float)) else None,
+                )
+        self.thresholds = parsed
 
     def _apply_lights(self, data: dict) -> None:
         """Estado efectivo = configuración + temporizador (RF-20, RF-21, RF-22).

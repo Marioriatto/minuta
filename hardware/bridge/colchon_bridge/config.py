@@ -13,7 +13,7 @@ class ConfigError(Exception):
 @dataclass(frozen=True)
 class Tuning:
     sample_interval_s: float = 10
-    flush_interval_s: float = 10
+    flush_interval_s: float = 2  # RNF-01; solo sube si hay algo nuevo
     poll_interval_s: float = 3
     presence_threshold_kg: float = 1.0
     absence_confirm_s: float = 10
